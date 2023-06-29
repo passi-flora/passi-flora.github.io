@@ -1,0 +1,486 @@
+<!Doctype html>
+<html lang="en">
+<!--
+Therian Spectrum Tool
+Version: 2023-06-29_2212
+Written by: Passiflora (TG: Passiflora // Github: passi-flora)
+Special thanks for helping me with the code goes to: Vrydi
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>
+-->
+<head>
+	<title>Therian Spectrum Tool</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+	/* https://stackoverflow.com/a/60084871 */
+	:root {
+    --selection-background: #000000;
+	/*#04AA6D;*/
+}
+
+		body {
+			font-family: Arial, sans-serif;
+		}
+		
+		#colorinput 
+		{
+			width: 50%;
+			background-color:transparent;
+			border-radius:5px;
+		}
+		
+		#downloadbutton 
+		{
+			font-size:1em;
+			border-radius:5px;
+			padding: 0.2em 0.4em 0.2em 0.4em;
+		}
+		
+		.header 
+		{
+			text-align:center;
+		}
+		
+		hr 
+		{
+			margin-top:2em;
+		}
+		
+		input 
+		{
+			border: 2px solid black;
+			border-radius:5px;
+		}
+		
+		input, p
+		{
+			margin: 1em 1em;
+		}
+	
+
+/* https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+	.slider {
+	  -webkit-appearance: none;  /* Override default CSS styles */
+	  appearance: none;
+	  width: 100%; /* Full-width */
+	  height: 25px; /* Specified height */
+	  background: #d3d3d3; /* Grey background */
+	  outline: none; /* Remove outline */
+	  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+	  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+	  transition: opacity .2s;
+	}
+
+	/* Mouse-over effects */
+	.slider:hover {
+	  opacity: 1; /* Fully shown on mouse-over */
+	}
+
+	/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+	.slider::-webkit-slider-thumb {
+	  -webkit-appearance: none; /* Override default look */
+	  appearance: none;
+	  width: 25px; /* Set a specific slider handle width */
+	  height: 25px; /* Slider handle height */
+	  background: var(--selection-background);
+	  cursor: pointer; /* Cursor on hover */
+	}
+
+	.slider::-moz-range-thumb {
+	  width: 25px; /* Set a specific slider handle width */
+	  height: 25px; /* Slider handle height */
+	  background: var(--selection-background);
+	  cursor: pointer; /* Cursor on hover */
+	}
+
+		/* added soft styling */
+		.sliders div {
+			display: flex;
+			align-items: center;
+			margin: auto;
+			width: min(100vw, 500px);
+			margin-block: 8px;
+		}
+
+		.sliders {
+			margin-top:2em;
+			padding:1em;
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		label {
+			width: 50%;
+		}
+	</style>
+</head>
+
+<body>
+<div class="header"><h2>Therian Spectrum Tool</h2><h3>Locate yourself on the Therian Spectrum</h3></div>
+	<div style="position: relative; width: 500px; margin: auto;">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<div class="sliders">
+		<div>
+			<label for="Non-Humanity:">How much I do feel to be non-human</label>
+			<input type="range" id="Non-Humanity:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(0,this,'non_humanity');" oninput="updateSlider(0,this,'non_humanity')"><span
+				id="non_humanity">1</span>
+		</div>
+		<div>
+			<label for="Phantom Limbs:">My amount of perception of phantom limbs</label>
+			<input type="range" id="Phantom Limbs:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(1,this,'phantom_limbs');" oninput="updateSlider(1,this,'phantom_limbs')"><span
+				id="phantom_limbs">1</span>
+		</div>
+		<div>
+			<label for="Instincts:">How much my therian instincts affects my daily life</label>
+			<input type="range" id="Instincts:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(2,this,'instincts');" oninput="updateSlider(2,this,'instincts')"><span
+				id="instincts">1</span>
+		</div>
+		<div>
+			<label for="Shiftings:">How often I do have shifted consciousness</label>
+			<input type="range" id="Shiftings:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(3,this,'shiftings');" oninput="updateSlider(3,this,'shiftings')"><span
+				id="shiftings">1</span>
+		</div>
+		<div>
+			<label for="Dysphoria:">Amount of my species dyshphoria</label>
+			<input type="range" id="Dysphoria:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(4,this,'shiftings');" oninput="updateSlider(4,this,'shiftings')"><span
+				id="dysphoria">1</span>
+		</div>
+		<div>
+			<label for="Euphoria:">Amount of my species euhphoria</label>
+			<input type="range" id="Euphoria:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(5,this,'euphoria');" oninput="updateSlider(5,this,'euphoria')"><span
+				id="euphoria">1</span>
+		</div>
+		<div>
+			<label for="Spirituality:">How spiritual I am</label>
+			<input type="range" id="Spirituality:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(6,this,'spirituality');" oninput="updateSlider(6,this,'spirituality')"><span
+				id="spirituality">1</span>
+		</div>
+		<div>
+			<label for="Pride:">Amount of pride shown to the outside</label>
+			<input type="range" id="Pride:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(7,this,'pride');" oninput="updateSlider(7,this,'pride')"><span
+				id="pride">1</span>
+		</div>
+		<div>
+			<label for="Gears etc.:">How much I'm into gears / wears / items of my Theriotype</label>
+			<input type="range" id="Gears etc.:" min="0" max="10" value="0" class="slider"
+				onchange="updateSlider(8,this,'gears_etc');" oninput="updateSlider(8,this,'gears_etc')"><span
+				id="gears_etc">1</span>
+		</div>
+		<div>
+			<label for="colorinput">Color:</label>
+			<!-- changed input text to input color => creates native colour picker -->
+			<!-- added on input change => instant colour change instead of having to click an extra button -->
+			<!-- on input: every time the value changes -->
+			<!-- on change: every time the user closes the colour picker -->
+			<input type="color" id="colorinput" value="#5e386b" oninput="colorUpdate('colorinput')">
+		</div>
+	</div>
+
+	<div style="margin: auto; width: fit-content;">
+		<button id="downloadbutton" onclick="downloadpic()">download picture</button>
+	</div>
+
+<hr>
+<p>This software is not intended for any medical purpose or diagnosis, and it is not intended for any treatment of any kind. Just consider this software as a kind of playful approach to your therian existence. If you don't know what a therian is, get informed here: <a href="https://therian-guide.com" target="_blank" rel="noreferrer">therian-guide.com</a>. If you are in mental trouble, please seek professional help at the <a href="https://www.verywellmind.com/national-helpline-database-4799696" target="_blank" rel="noreferrer">Helpline Database</a>.</p>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<!-- Or locally: <script src="cdn.jsdelivr.net_npm_chart.js"></script>-->
+
+	<script>
+		// calculates number of characters on a label line for the chart
+		// calculation: width of device / arbitrary number that looks good
+		const getLabelWidth = () => window.innerWidth / 20
+		console.log(getLabelWidth())
+		const ctx = document.getElementById('myChart');
+
+		nonhumanity = {
+			label:"Non-Humanity",
+			value:1,
+		}
+		
+		phantom_limbs = {
+			label:"Phantom Limbs",
+			value:1,
+		}
+
+		instincts = {
+			label:"Instincts",
+			value:1,
+		}
+
+		shifting = {
+			label:"Shiftings",
+			value:1,
+		}
+
+		species_dysphoria = {
+			label:"Dysphoria",
+			value:1,
+		}
+
+		species_euphoria = {
+			label:"Euphoria",
+			value:1,
+		}
+
+		spiritual = {
+			label:"Spirituality",
+			value:1,
+		}
+
+		pride = {
+			label:"Pride",
+			value:1,
+		}
+
+		expression = {
+			label:"Thingies",
+			value:1,
+		}
+
+		color = "94, 56, 107";
+
+		data = {
+			labels: [
+				// make every label go through the function to split the label up into pieces.
+				formatLabel(nonhumanity.label, getLabelWidth()),
+				formatLabel(phantom_limbs.label, getLabelWidth()),
+				formatLabel(instincts.label, getLabelWidth()),
+				formatLabel(shifting.label, getLabelWidth()),
+				formatLabel(species_dysphoria.label, getLabelWidth()),
+				formatLabel(species_euphoria.label, getLabelWidth()),
+				formatLabel(spiritual.label, getLabelWidth()),
+				formatLabel(pride.label, getLabelWidth()),
+				formatLabel(expression.label, getLabelWidth()),
+			],
+			datasets: [{
+				label: '',
+				data: [
+					nonhumanity.value, // 0
+					phantom_limbs.value, // 1
+					instincts.value, // 2
+					shifting.value, // 3
+					species_dysphoria.value, // 4
+					species_euphoria.value, // 5
+					spiritual.value, // 6
+					pride.value, // 7 
+					expression.value, // 8
+				],
+				fill: true,
+				backgroundColor: 'rgba(' + color + ',0.5)',
+				borderColor: 'rgba(' + color + ',0.5)',
+				pointBackgroundColor: 'rgba(' + color + ',0.5)',
+				pointBorderColor: 'rgba(' + color + ',0.5)',
+				pointHoverBackgroundColor: 'rgba(' + color + ',0.5)',
+				pointHoverBorderColor: 'rgba(' + color + ',0.5)',
+
+			},
+
+			]
+		};
+
+		onmobile();
+
+		const config = {
+
+			type: 'radar',
+			data: data,
+			options: {
+				responsive: true, // not necessary, default is `true`,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+				elements: {
+					line: {
+						borderWidth: 3
+					}
+				},
+				ticks: {
+					min: 0,
+					max: 10,
+					font: {
+						size: 2,
+					},
+				},
+				scales: {
+					r: {
+						pointLabels: {
+							font: {
+								size: font_size
+							},
+							//display: false // Hides the labels around the radar chart
+						},
+					max: 10,
+					min: 0,
+					drawTicks: false,
+					showLabelBackdrop: false,
+					ticks: {
+							stepSize: 1,
+							//https://stackoverflow.com/a/70662641
+							display: false // Hides the labels in the middel (numbers)
+							},
+					},
+				}
+			},
+		};
+		console.log(font_size);
+		
+		myChart = null;
+		if (myChart == null) {
+			myChart = new Chart(ctx, config);
+		} else {
+			myChart.update()
+		}
+		
+		function updateSlider(nr, e, f) {
+			value = e.value;
+			document.getElementById(f).innerHTML = value;
+			myChart.data.datasets[0].data[nr] = value;
+			myChart.update();
+}
+
+		function colorUpdate(g) {
+			value = document.getElementById(g).value
+			try { color = hexToRgbA(value).slice(5, -3); } catch (error) { }
+			myChart.data.datasets[0].backgroundColor = 'rgba(' + color + ',0.5)';
+			myChart.data.datasets[0].borderColor = 'rgba(' + color + ',0.5)',
+			myChart.data.datasets[0].pointBackgroundColor = 'rgba(' + color + ',0.5)',
+			myChart.data.datasets[0].pointBorderColor = 'rgba(' + color + ',0.5)',
+			myChart.data.datasets[0].pointHoverBackgroundColor = 'rgba(' + color + ',0.5)',
+			myChart.data.datasets[0].pointHoverBorderColor = 'rgba(' + color + ',0.5)',
+			myChart.update();
+			colorchange("slider");
+		}
+
+		//https://stackoverflow.com/a/21648508
+		function hexToRgbA(hex) {
+			var c;
+			if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+				c = hex.substring(1).split('');
+				if (c.length == 3) {
+					c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+				}
+				c = '0x' + c.join('');
+				return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',1)';
+			}
+			throw new Error('Bad Hex');
+		}
+
+		function downloadpic() {
+			var link = document.createElement('a');
+			link.download = 'My Therian Spectrum.png';
+			link.href = document.getElementById('myChart').toDataURL()
+			link.click();
+		}
+
+		//https://stackoverflow.com/a/11381730
+		function detectMob() {
+			return ((window.innerWidth <= 800) && (window.innerHeight <= 800));
+		}
+
+		function onmobile() {
+
+			if (detectMob()) {
+				font_size = 8;
+			} else {
+				font_size = 10;
+			}
+
+		}
+
+		// https://stackoverflow.com/a/38806741
+		// splits string up into an array of smaller strings depending on given max width (number of characters)
+		function formatLabel(str, maxwidth) {
+			var sections = [];
+			var words = str.split(" ");
+			var temp = "";
+
+			words.forEach(function (item, index) {
+				if (temp.length > 0) {
+					var concat = temp + ' ' + item;
+
+					if (concat.length > maxwidth) {
+						sections.push(temp);
+						temp = "";
+					}
+					else {
+						if (index == (words.length - 1)) {
+							sections.push(concat);
+							return;
+						}
+						else {
+							temp = concat;
+							return;
+						}
+					}
+				}
+
+				if (index == (words.length - 1)) {
+					sections.push(item);
+					return;
+				}
+
+				if (item.length < maxwidth) {
+					temp = item;
+				}
+				else {
+					sections.push(item);
+				}
+
+			});
+
+			return sections;
+		}
+
+
+function colorchange(h){
+	const matches = document.getElementsByClassName(h);
+	document.documentElement.style.setProperty("--selection-background", 'rgba(' + color + ',1)');
+	document.getElementById("downloadbutton").style.backgroundColor='rgba(' + color + ',0.5)';
+	for (let i = 0; i < matches.length; i++) {
+	  //matches[i].style.backgroundColor = 'rgba(' + color + ',0.5)';
+	 // matches[i].style.backgroundColor = 'rgba(' + color + ',0.5)';
+	  matches[i].style.backgroundImage = 'linear-gradient(45deg, rgba(' + color + ',0), rgba(' + color + ',1))';
+	}
+}
+
+colorchange("slider")
+</script>
+</body>
+</html>	
