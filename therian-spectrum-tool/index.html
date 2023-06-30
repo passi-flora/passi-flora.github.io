@@ -2,7 +2,7 @@
 <html lang="en">
 <!--
 Therian Spectrum Tool
-Version: 2023-06-29_2212
+Version: 2023-06-30_1357
 Written by: Passiflora (TG: Passiflora // Github: passi-flora)
 Special thanks for helping me with the code goes to: Vrydi
 
@@ -34,13 +34,14 @@ For more information, please refer to <http://unlicense.org/>
 <head>
 	<title>Therian Spectrum Tool</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 	/* https://stackoverflow.com/a/60084871 */
 	:root {
     --selection-background: #000000;
 	/*#04AA6D;*/
 }
+
 
 		body {
 			font-family: Arial, sans-serif;
@@ -53,7 +54,17 @@ For more information, please refer to <http://unlicense.org/>
 			border-radius:5px;
 		}
 		
-		#downloadbutton 
+		.disclaimer {
+			max-width:100vw;
+		}
+		
+		@media screen and (min-width: 800px) {
+			.disclaimer {
+				max-width:50vw;
+			}
+		}
+		
+		#downloadbutton, #multipleinputbutton, #multiplesend, #multipleclosebutton
 		{
 			font-size:1em;
 			border-radius:5px;
@@ -62,7 +73,16 @@ For more information, please refer to <http://unlicense.org/>
 		
 		.header 
 		{
-			text-align:center;
+			text-align:left;
+			margin:1em;
+		}
+		
+		@media screen and (min-width: 800px) {
+		.header 
+			{
+				margin:0;
+				text-align:center;
+			}
 		}
 		
 		hr 
@@ -80,7 +100,7 @@ For more information, please refer to <http://unlicense.org/>
 		{
 			margin: 1em 1em;
 		}
-	
+		
 
 /* https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 	.slider {
@@ -125,9 +145,16 @@ For more information, please refer to <http://unlicense.org/>
 			width: min(100vw, 500px);
 			margin-block: 8px;
 		}
+		
+		@media screen and (max-width: 800px) {
+			.sliders div 
+			{
+				margin:1em;
+			}
+		}
 
 		.sliders {
-			margin-top:2em;
+			margin-top:1em;
 			padding:1em;
 			display: flex;
 			flex-wrap: wrap;
@@ -136,16 +163,73 @@ For more information, please refer to <http://unlicense.org/>
 		label {
 			width: 50%;
 		}
+		
+		
+		#multipleinput 
+		{
+			position:absolute;
+			top:0px;
+			left:0px;
+			min-height:100vh;
+			min-width:100vw;
+			background-color:white;
+			z-index:90;
+			display:none;
+		}
+		
+		#wrapper 
+		{
+			position:absolute;
+			top:0px;
+			left:0px;
+			min-height:100vh;
+			min-width:100vw;
+			z-index:80;
+		}
+		
+		textarea 
+		{
+			width:80vw;
+			height:40vh;
+			margin:1em;
+		}
+		
+		canvas 
+		{
+			margin:0em 5em 0em 5em;
+		}
+		
 	</style>
 </head>
 
 <body>
+<div id="multipleinput"><p>If you like to compare different charts, this is for you. It's neccessary that you use a special input format. Example:</p>
+<p style="">7,3,5,5,8,2,9,2,5,Name,#cc0000<br>
+6,4,2,1,8,6,1,3,4,Name2,#00ff00</p>
+<p>The values have a minimum of 0, a maximum of 10.</p>
+<p>Place each chart into a new line. Seperate every entry by a comma (,). </p>
+<p>You can choose a color by using the color picker and copy paste it into the input field. The # at the beginning of a HTML-color is neccessary.</p>
+		<p>
+			<label for="colorinput">Color:</label>
+			<!-- changed input text to input color => creates native colour picker -->
+			<!-- added on input change => instant colour change instead of having to click an extra button -->
+			<!-- on input: every time the value changes -->
+			<!-- on change: every time the user closes the colour picker -->
+			<input type="color" id="colorinput2" value="#5e386b" oninput="colorUpdate('colorinput2');multiplecolorshow()">
+		</p>
+<p>Chosen Color: <b><span id="multiplecolorshowid"></span></b></p>
+<textarea id="textarea">7,3,5,5,8,2,9,2,5,Name,#cc0000
+6,4,2,1,8,6,1,3,4,Name2,#00ff00</textarea>
+<p><button id="multiplesend" onclick="multiplesend()">compare now</button></p>
+<p><button id="multipleclosebutton" onclick="multipleclose()">skip</button></p>
+</div>
+<div id="wrapper">
 <div class="header"><h2>Therian Spectrum Tool</h2><h3>Locate yourself on the Therian Spectrum</h3></div>
 	<div style="position: relative; width: 500px; margin: auto;">
 		<canvas id="myChart"></canvas>
 	</div>
 
-	<div class="sliders">
+	<div class="sliders" id="sliders">
 		<div>
 			<label for="Non-Humanity:">How much I do feel to be non-human</label>
 			<input type="range" id="Non-Humanity:" min="0" max="10" value="0" class="slider"
@@ -173,7 +257,7 @@ For more information, please refer to <http://unlicense.org/>
 		<div>
 			<label for="Dysphoria:">Amount of my species dyshphoria</label>
 			<input type="range" id="Dysphoria:" min="0" max="10" value="0" class="slider"
-				onchange="updateSlider(4,this,'shiftings');" oninput="updateSlider(4,this,'shiftings')"><span
+				onchange="updateSlider(4,this,'dysphoria');" oninput="updateSlider(4,this,'dysphoria')"><span
 				id="dysphoria">1</span>
 		</div>
 		<div>
@@ -211,11 +295,13 @@ For more information, please refer to <http://unlicense.org/>
 	</div>
 
 	<div style="margin: auto; width: fit-content;">
-		<button id="downloadbutton" onclick="downloadpic()">download picture</button>
+		<p><button id="downloadbutton" class="button" onclick="downloadpic()">download picture</button></p>
+		<p><button id="multipleinputbutton" onclick="multipleinput()">compare</button></p>
 	</div>
 
 <hr>
-<p>This software is not intended for any medical purpose or diagnosis, and it is not intended for any treatment of any kind. Just consider this software as a kind of playful approach to your therian existence. If you don't know what a therian is, get informed here: <a href="https://therian-guide.com" target="_blank" rel="noreferrer">therian-guide.com</a>. If you are in mental trouble, please seek professional help at the <a href="https://www.verywellmind.com/national-helpline-database-4799696" target="_blank" rel="noreferrer">Helpline Database</a>.</p>
+<p class="disclaimer">This software is not intended for any medical purpose or diagnosis, and it is not intended for any treatment of any kind. Just consider this software as a kind of playful approach to your therian existence. If you don't know what a therian is, get informed here: <a href="https://therian-guide.com" target="_blank" rel="noreferrer">therian-guide.com</a>. If you are in mental trouble, please seek professional help at the <a href="https://www.verywellmind.com/national-helpline-database-4799696" target="_blank" rel="noreferrer">Helpline Database</a>.</p>
+</div> <!-- wrapper -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<!-- Or locally: <script src="cdn.jsdelivr.net_npm_chart.js"></script>-->
 
@@ -319,7 +405,7 @@ For more information, please refer to <http://unlicense.org/>
 			type: 'radar',
 			data: data,
 			options: {
-				responsive: true, // not necessary, default is `true`,
+				responsive: false, // not necessary, default is `true`,
 				maintainAspectRatio: false,
 				plugins: {
 					legend: {
@@ -473,6 +559,7 @@ function colorchange(h){
 	const matches = document.getElementsByClassName(h);
 	document.documentElement.style.setProperty("--selection-background", 'rgba(' + color + ',1)');
 	document.getElementById("downloadbutton").style.backgroundColor='rgba(' + color + ',0.5)';
+	document.getElementById("multipleinputbutton").style.backgroundColor='rgba(' + color + ',0.5)';
 	for (let i = 0; i < matches.length; i++) {
 	  //matches[i].style.backgroundColor = 'rgba(' + color + ',0.5)';
 	 // matches[i].style.backgroundColor = 'rgba(' + color + ',0.5)';
@@ -481,6 +568,83 @@ function colorchange(h){
 }
 
 colorchange("slider")
+
+function multipleinput()
+{
+	document.getElementById("wrapper").style.display="none";
+	document.getElementById("multipleinput").style.display="block";
+	//document.getElementById("textarea").focus();
+	document.getElementById("multiplesend").style.backgroundColor='rgba(' + color + ',0.5)';
+	document.getElementById("multipleclosebutton").style.backgroundColor='rgba(' + color + ',0.5)';
+	 document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+	
+}
+
+function multiplesend()
+{
+	h = document.getElementById("textarea").value;
+	h = h.replace(" ","");
+	h = h.split("\n");
+	
+	
+	datasets = [];
+	
+	
+	for (let i = 0; i < h.length; i++) {
+		h[i] = h[i].split(",");
+		color = hexToRgbA("#000000").slice(5, -3);
+		try { color = hexToRgbA(h[i][10]).slice(5, -3); } catch (error) { }
+		
+		myChart.data.datasets[i] = (	
+		
+		{
+    label: h[i][9],
+    data: [
+		h[i][0],h[i][1],h[i][2],h[i][3],h[i][4],h[i][5],h[i][6],h[i][7],h[i][8]
+	],
+    fill: true,
+    backgroundColor: 'rgba('+color+',0.5)',
+    borderColor: 'rgba('+color+',0.5)',
+    pointBackgroundColor: 'rgba('+color+',0.5)',
+    pointBorderColor: 'rgba('+color+',0.5)',
+    pointHoverBackgroundColor: 'rgba('+color+',0.5)',
+    pointHoverBorderColor: 'rgba('+color+',0.5)',
+
+  }
+  
+  )
+		
+		
+	}
+	
+	document.getElementById("wrapper").style.display="block";
+	document.getElementById("multipleinput").style.display="none";
+	document.getElementById("sliders").style.display="none";
+	config.options.plugins.legend.display = true;
+	myChart.update();
+	
+	//document.getElementById("test").innerHTML = h;
+}
+
+//multipleinput()
+
+function multiplecolorshow()
+{
+	j = document.getElementById("colorinput2").value;
+	console.log(j);
+	document.getElementById("multiplecolorshowid").innerHTML = j;
+	color = hexToRgbA(j).slice(5, -3);
+	document.getElementById("multiplesend").style.backgroundColor='rgba(' + color + ',0.5)';
+	document.getElementById("multipleclosebutton").style.backgroundColor='rgba(' + color + ',0.5)';
+}
+
+function multipleclose()
+{
+	document.getElementById("wrapper").style.display="block";
+	document.getElementById("multipleinput").style.display="none";
+	document.getElementById("sliders").style.display="block";
+}
 </script>
 </body>
 </html>	
