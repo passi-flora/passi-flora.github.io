@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font: 400 15px/1.8 "Lato", sans-serif;
+  color: #777;
+}
+
+.bgimg-1, .bgimg-2, .bgimg-3 {
+  position: relative;
+  opacity: 0.65;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.bgimg-1 {
+  background-image: url("ext/ai-generated-7971257.jpg");
+  height: 100%;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption .border {
+  background-color: rgba(17, 17, 17, 0.8);
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font: 20px "Lato", sans-serif;
+  color: rgba(17, 17, 17, 0.8)
+}
+
+#pass 
+{
+	max-width:50vw!important;
+}
+
+
+	#scrolltotop 
+	{
+	position:fixed;
+	bottom:0;
+	right:0px;
+	width:5em;
+	height:5em;
+	background-color:rgba(0,0,0,0.5);
+	display:none;
+	}
+	
+	.notification-message-unread {
+ background: white;
+ background-color: transparent;
+  animation: blinker 1s linear;
+}
+
+@keyframes blinker {
+  25% {
+    background-color: red;
+  }
+
+  50% {
+    background-color: transparent;
+  }
+  
+}
+
+#over 
+{
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100vw;
+	height:5vh;
+	background-color:rgba(17,17,17,0.8);
+	z-index:90;
+	display:flex;
+	color:white;
+	display:none;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#zeromd 
+{
+	position:relative;
+	top:0px;
+	left:0px;
+	max-width:500px;
+	border:1px solid black;
+	padding:1em;
+	padding-bottom:5em;
+	margin:0 auto;
+	background: rgba(255,255,255,0.8);
+	
+	
+}
+
+.lock 
+{
+	height:0.9em;
+}
+
+.new 
+
+{
+	/*background-image: url("ext/ai-generated-7971257.jpg");*/
+	
+	
+	 background-image: 
+        linear-gradient(to bottom, rgba(18,42, 66, .85), rgba(77, 0, 77, .85)), 
+        url("ext/ai-generated-7971257.jpg");
+       -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover; 
+	
+	
+	background-position: center;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+}
+
+</style>
+</head>
+<body>
+
+<div class="bgimg-1" id="first">
+  <div class="caption">
+  <noscript><p class="border" style="color:#cc0000;background-color:white;">No access without Javascript.</p></noscript>
+    <input id="pass" type="password" class="border" value="" autofocus>
+	<button class="border" onclick="start()"><img class="lock" src="ext/lock_open_FILL0_wght400_GRAD0_opsz48.svg"></button>
+  </div>
+</div>
+
+<div id="over" onclick="scrolltotop()"><p class="center">zurück zum Start</p> </div>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>-->
+<script src="data/cdnjs.cloudflare.com_ajax_libs_crypto-js_4.0.0_crypto-js.min.js"></script>
+  <!--<script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>-->
+  <script type="module" src="data/cdn.jsdelivr.net_gh_zerodevx_zero-md@2_dist_zero-md.min.js"></script>
+
+<script>
+
+function start(){
+
+// Funktion zum Verschlüsseln
+function encryptText(text, key) {
+  const ciphertext = CryptoJS.AES.encrypt(text, key).toString();
+  return ciphertext;
+}
+
+// Funktion zum Entschlüsseln
+function decryptText(ciphertext, key) {
+  const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+  const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+  return decryptedText;
+}
+
+// Verwendungsbeispiel
+
+
+
+async function read(thisfile) {
+  const response = await fetch(thisfile);
+  const inhalt = await response.text();
+  return inhalt;
+}
+
+function oki(){
+read('data/data.md').then(inhalt => 
+{
+
+const plaintext = inhalt
+const key = document.getElementById("pass").value;
+
+const ciphertext = encryptText(plaintext, key);
+
+let decryptedText 
+try{const decryptedText = decryptText(inhalt, key);
+
+var zeromdtext = document.createElement('script');
+zeromdtext.type = "text/markdown";
+
+var zeromd = document.createElement('zero-md');
+//zeromd.src = "example.md";
+zeromd.id="zeromd"
+zeromd.innerHTML = '<'+'script type="text/markdown">'+decryptedText+'<'+'/script>';
+document.getElementById("first").style.display = "none";
+document.getElementById("over").style.display = "flex";
+document.body.appendChild(zeromd); 
+document.body.style ="padding: 1em;";
+
+//document.getElementById("textarea").value = decryptedText;
+
+
+document.body.classList.add("new");
+
+} catch{decryptedText = ""; 
+
+
+
+var zeromd = document.createElement('zero-md');
+zeromd.src = "info.md";
+
+
+document.body.classList.add("notification-message-unread");
+ setTimeout(function(){document.body.classList.remove("notification-message-unread");},1000)
+
+//document.getElementById("textarea").value = ciphertext;
+
+}
+//console.log('Entschlüsselter Text:', decryptedText);
+console.log(decryptedText);
+
+ //<script type="text/markdown">
+
+
+
+
+
+
+
+
+
+})
+
+}
+
+oki();
+
+
+
+
+
+}
+
+function scrolltotop()
+{
+	 document.body.scrollTop = 0; // For Safari
+	 document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+//start();
+
+
+</script>
+</body>
+</html>
