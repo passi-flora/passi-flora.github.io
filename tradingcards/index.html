@@ -68,15 +68,17 @@
 	display: flex;
 	justify-content: space-between;
 	margin: -0.3in 0.1in 0 0.1in;
-	line-height:0.15in;
+	line-height:0.10in;
 	padding:0.1in;
-	font-size: 0.2in;
+	font-size: 0.15in;
+	letter-spacing: 0.01in;
 }
 
 	.card .value {
 		text-align: right;
 		font-weight:bold;
-		font-size: 0.2in;
+		font-size: 0.15in;
+
 	}
 	
 	@media print
@@ -113,8 +115,8 @@
 <h2 class="introheader no-print">Your own Trading Cards</h2>
 <p class="intro no-print">If you want to make trading cards or create a well known, popular card game, then you are in the right place. Look at the sample cards and you will quickly understand what you need to do. Have fun!</p>
 <p class="intro no-print">The best way is to print the cards on DIN A4 in landscape format. That way you can fit 8 cards on one page.</p>
-<textarea id="input" class="no-print">Lil Dragon;dragon.jpg;Attack;Defense;Magic;Stamina;1;2;4;3
-Smol Foxo;fox.jpg;Attack;Defense;Magic;Stamina;1;3;4;2
+<textarea id="input" class="no-print">Lil Dragon;dragon.jpg;Attack;Defense;Magic;Stamina;Special;12;14;12;13;11
+Smol Foxo;fox.jpg;Attack;Defense;Magic;Stamina;Special;12;14;12;13;11
 </textarea>
 <p><button class="no-print" onclick="generate()">generate from input</button></p>
 <p><button class="no-print" onclick="toggle()">toggle colors</button></p>
@@ -164,7 +166,62 @@ function generate()
 	
 for (let i = 0; i < items.length; i++) {
 	if(items[i].length>5){
-		valuenames = items[i].split(";");  var carddiv = document.createElement('div'); carddiv.classList.add('card'); var img = document.createElement('img'); img.src  = valuenames[1]; var title = document.createElement('h2'); title.innerHTML = valuenames[0]; title.classList.add('title'); var values = document.createElement('div'); values.classList.add('values'); var leftValues= document.createElement('div'); leftValues.classList.add('left-value'); var valuename1 = document.createElement('p'); valuename1.innerHTML = valuenames[2]; leftValues.appendChild(valuename1); var valuename2 = document.createElement('p'); valuename2.innerHTML = valuenames[3]; leftValues.appendChild(valuename2); var valuename3 = document.createElement('p'); valuename3.innerHTML = valuenames[4]; leftValues.appendChild(valuename3); var valuename4 = document.createElement('p'); valuename4.innerHTML = valuenames[5]; leftValues.appendChild(valuename4);var rightValues= document.createElement('div'); rightValues.classList.add('right-value'); var valuename1 = document.createElement('p'); valuename1.innerHTML = valuenames[6]; valuename1.classList.add('value'); rightValues.appendChild(valuename1); var valuename2 = document.createElement('p'); valuename2.innerHTML = valuenames[7]; valuename2.classList.add('value'); rightValues.appendChild(valuename2); var valuename3 = document.createElement('p'); valuename3.innerHTML = valuenames[8]; valuename3.classList.add('value'); rightValues.appendChild(valuename3); var valuename4 = document.createElement('p'); valuename4.innerHTML = valuenames[9]; valuename4.classList.add('value'); rightValues.appendChild(valuename4);values.appendChild(leftValues); values.appendChild(rightValues);carddiv.appendChild(img); carddiv.appendChild(title); carddiv.appendChild(values); document.body.appendChild(carddiv); 
+		valuenames = items[i].split(";");
+  var carddiv = document.createElement('div');
+ carddiv.classList.add('card');
+ var img = document.createElement('img');
+ img.src  = valuenames[1];
+ var title = document.createElement('h2');
+ title.innerHTML = valuenames[0];
+ title.classList.add('title');
+ var values = document.createElement('div');
+ values.classList.add('values');
+ var leftValues= document.createElement('div');
+ leftValues.classList.add('left-value');
+ var valuename1 = document.createElement('p');
+ valuename1.innerHTML = valuenames[2];
+ leftValues.appendChild(valuename1);
+ var valuename2 = document.createElement('p');
+ valuename2.innerHTML = valuenames[3];
+ leftValues.appendChild(valuename2);
+ var valuename3 = document.createElement('p');
+ valuename3.innerHTML = valuenames[4];
+ leftValues.appendChild(valuename3);
+ var valuename4 = document.createElement('p');
+ valuename4.innerHTML = valuenames[5];
+ leftValues.appendChild(valuename4);
+ var valuename4 = document.createElement('p');
+ valuename4.innerHTML = valuenames[6];
+ leftValues.appendChild(valuename4);
+var rightValues= document.createElement('div');
+ rightValues.classList.add('right-value');
+ var valuename1 = document.createElement('p');
+ valuename1.innerHTML = valuenames[7];
+ valuename1.classList.add('value');
+ rightValues.appendChild(valuename1);
+ var valuename2 = document.createElement('p');
+ valuename2.innerHTML = valuenames[8];
+ valuename2.classList.add('value');
+ rightValues.appendChild(valuename2);
+ var valuename3 = document.createElement('p');
+ valuename3.innerHTML = valuenames[9];
+ valuename3.classList.add('value');
+ rightValues.appendChild(valuename3);
+ var valuename4 = document.createElement('p');
+ valuename4.innerHTML = valuenames[10];
+ valuename4.classList.add('value');
+ rightValues.appendChild(valuename4);
+ var valuename5 = document.createElement('p');
+ valuename5.innerHTML = valuenames[11];
+ valuename5.classList.add('value');
+ rightValues.appendChild(valuename5);
+values.appendChild(leftValues);
+ values.appendChild(rightValues);
+carddiv.appendChild(img);
+ carddiv.appendChild(title);
+ carddiv.appendChild(values);
+ document.body.appendChild(carddiv);
+ 
 	}
 }
 
