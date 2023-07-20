@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SVG Buttons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      margin: 10px;
+      padding: 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .button-1 {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWRlIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iI2ZmY2UwMCIgZD0iTTAgMzIwaDY0MHYxNjBIMHoiLz4KICA8cGF0aCBkPSJNMCAwaDY0MHYxNjBIMHoiLz4KICA8cGF0aCBmaWxsPSIjZDAwIiBkPSJNMCAxNjBoNjQwdjE2MEgweiIvPgo8L3N2Zz4K);
+      width: 132px;
+      height: 100px;
+    }
+
+    .button-2 {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWdiIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iIzAxMjE2OSIgZD0iTTAgMGg2NDB2NDgwSDB6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRiIgZD0ibTc1IDAgMjQ0IDE4MUw1NjIgMGg3OHY2Mkw0MDAgMjQxbDI0MCAxNzh2NjFoLTgwTDMyMCAzMDEgODEgNDgwSDB2LTYwbDIzOS0xNzhMMCA2NFYwaDc1eiIvPgogIDxwYXRoIGZpbGw9IiNDODEwMkUiIGQ9Im00MjQgMjgxIDIxNiAxNTl2NDBMMzY5IDI4MWg1NXptLTE4NCAyMCA2IDM1TDU0IDQ4MEgwbDI0MC0xNzl6TTY0MCAwdjNMMzkxIDE5MWwyLTQ0TDU5MCAwaDUwek0wIDBsMjM5IDE3NmgtNjBMMCA0MlYweiIvPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNDEgMHY0ODBoMTYwVjBIMjQxek0wIDE2MHYxNjBoNjQwVjE2MEgweiIvPgogIDxwYXRoIGZpbGw9IiNDODEwMkUiIGQ9Ik0wIDE5M3Y5Nmg2NDB2LTk2SDB6TTI3MyAwdjQ4MGg5NlYwaC05NnoiLz4KPC9zdmc+Cg);
+      width: 132px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Discover a new hobby</h1>
+  <h1>Entdecke ein neues Hobby</h1>
+  <div class="button-container">
+    <a href="hobbygenerator_standalone_de.html"><button class="button button-1"></button></a>
+    <a href="hobbygenerator_standalone_en.html"><button class="button button-2"></button></a>
+  </div>
+
+  <script>
+    function handleButtonClick(buttonNumber) {
+      // Hier kannst du den Code hinzufügen, der auf den Klick der Buttons reagiert.
+      // buttonNumber gibt an, welcher Button geklickt wurde (1 oder 2).
+      // Füge den gewünschten Code hinzu, um die Aktion für jeden Button durchzuführen.
+      console.log("Button " + buttonNumber + " wurde geklickt!");
+    }
+  </script>
+</body>
+</html>
